@@ -45,6 +45,9 @@ class IndexState:
         with open(self.state_path, "w", encoding="utf-8") as f:
             json.dump(state, indent=2, ensure_ascii=False)  
 
+    def get_file_hash():
+        pass
+        #STOPED HERE
 
     def _empty_state(self):
         pass
