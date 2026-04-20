@@ -1,0 +1,2 @@
+[console_scripts]
+obsidian-rag = cli.main:app

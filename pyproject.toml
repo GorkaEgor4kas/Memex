@@ -1,0 +1,95 @@
+# default settings for project
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "obsidian-rag"
+version = "0.1.0"
+description = "Offline-first RAG system for Obsidian vaults"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "GorkaEgor4ka", email = "gorkaegor4kas@gmail.com"}
+]
+license = {text = "MIT"}
+dependencies = [
+    "typer>=0.12.0",
+    "rich>=13.0.0",
+    "chromadb>=0.5.0",
+    "bm25s>=0.1.0",
+    "sentence-transformers>=3.0.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+    "httpx>=0.27.0",
+    "loguru>=0.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "black>=24.0.0",
+    "isort>=5.13.0",
+    "mypy>=1.8.0",
+    "ruff>=0.3.0",
+]
+
+[project.scripts]
+obsidian-rag = "cli.main:app"
+
+# ============================================
+# Obsidian RAG Default Configuration
+# This is the template. User config lives in:
+#   ~/.obsidian-rag/config.toml
+# ============================================
+
+[tool.obsidian-rag]
+vault_path = "~/Documents/Obsidian"
+mode = "auto"  # auto, online, offline
+
+[tool.obsidian-rag.indexing]
+chunk_size = 500
+chunk_overlap = 50
+use_parental = true
+
+[tool.obsidian-rag.retrieval]
+semantic_limit = 10
+bm25_limit = 10
+rrf_k = 60
+final_limit = 5
+
+[tool.obsidian-rag.online]
+provider = "deepseek"  # deepseek, groq
+model = "deepseek-chat"
+temperature = 0.2
+max_tokens = 1000
+prompt_template =  '''
+You are an assistant who answers questions strictly based on the notes provided.
+
+Context (user notes):
+{context}
+
+Question: {query}
+
+Answer the question using ONLY the information from the context.
+If the context doesn't answer the question, say, "No information on this question was found in the notes."
+Don't add anything of your own.
+'''
+
+[tool.obsidian-rag.system]
+chroma_db_path = "~/.obsidian-rag/chroma_data"
+bm25_index_path = "~/.obsidian-rag/bm25_index"
+log_level = "INFO"
+
+# hybrid search benchmarks
+[tool.obsidian-rag.thresholds]
+bm25_min_score = 1.0
+vector_min_similarity = 0.5
+
+
+
