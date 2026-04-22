@@ -9,7 +9,7 @@ def get_all_md_files(vault_path: Path) -> Set[Path]:
     
     md_files = set()
 
-    for file_path in vault_path.rglob("*.md"):
+    for file_path in vault_path.rglob("*.md"): #recursive search
         # Skip files inside hidden folders (like .obsidian, .git, .trash)
         if any(part.startswith(".") for part in file_path.parts):
             continue
