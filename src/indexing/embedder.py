@@ -24,11 +24,11 @@ class Embedder:
         
         embeddings = await loop.run_in_executor(
             None,
-            self.model.encode,
-            texts,
-            None,  # batch_size (None = автоматически)
-            'numpy',  # convert_to_numpy
-            False,  # normalize_embeddings
+            lambda: self.model.encode(
+                texts,
+                normalize_embeddings=False,
+                show_progress_bar=False
+            ).tolist()
         )
         
-        return embeddings.tolist()
+        return embeddings

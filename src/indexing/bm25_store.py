@@ -19,10 +19,10 @@ class BM25Store:
         
         corpus = [chunk.content for chunk in chunks]
 
-        corpus_tokens = bm25s.tokenize(corpus)
+        corpus_tokens = bm25s.tokenize(corpus, show_progress=False)
         
         self.retrieval = bm25s.BM25()
-        self.retrieval.index(corpus_tokens)
+        self.retrieval.index(corpus_tokens, show_progress=False)
 
         self.chunk_ids = [chunk.id for chunk in chunks]
 

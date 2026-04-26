@@ -49,7 +49,7 @@ obsidian-rag = "cli.main:app"
 # ============================================
 
 [tool.obsidian-rag]
-vault_path = "~/Documents/Obsidian"
+vault_path = "C:/Users/Егор/OneDrive/Рабочий стол/учебники по прогам/Backend"
 mode = "auto"  # auto, online, offline
 
 [tool.obsidian-rag.indexing]

@@ -50,7 +50,7 @@ class Config:
             if val := self._env.get("OBSIDIAN_RAG_VAULT_PATH"):
                 return Path(val).expanduser()
             if val := self._user.get("vault_path"):
-                return Path(val ).expanduser()
+                return Path(val).expanduser()
             return Path(self._defaults["vault_path"]).expanduser()
 
         @property
