@@ -45,7 +45,7 @@ class LLMClient:
         if not api_key:
             raise ValueError("API key not found. Set DEEPSEEK_API_KEY in .env")
 
-        responce = httpx.post(
+        response = httpx.post(
             "https://api.deepseek.com/v1/chat/completions",
             headers={
                 "Authorization": f"Bearer {api_key}",
@@ -63,7 +63,7 @@ class LLMClient:
             timeout=60,
         )
         
-        data = responce.json
+        data = response.json()
 
         return data["choices"][0]["message"]["content"]
 
