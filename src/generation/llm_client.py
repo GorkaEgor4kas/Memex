@@ -64,7 +64,6 @@ class LLMClient:
         )
         
         data = response.json()
-
         return data["choices"][0]["message"]["content"]
 
     def _call_groq(self, system: str, user: str) -> str:

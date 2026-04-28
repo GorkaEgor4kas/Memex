@@ -68,6 +68,9 @@ class IndexOrchestrator:
             stats["chunks"] += len(chunks)
             all_new_chunks.extend(chunks)
 
+        self.vector_store.db_path.mkdir(parents=True, exist_ok=True)
+        self.vector_store.save()
+
         #rebuild bm25 index if there any changes
         if to_process or to_delete:
             if self.verbose:
@@ -134,23 +137,25 @@ class IndexOrchestrator:
         return chunks
 
     def _rebuild_bm25(self):
-        """Rebuild BM25 index from all chunks in ChromaDB."""
-        #get all chunks from vector DB
-        results = self.vector_store.collection.get(
-            include=["documents", "metadatas"]
-        )
-
-        if results["ids"]:
-            chunks = []
-            for i, chunk_id in enumerate(results["ids"]):
-                metadata = results["metadatas"][i] if results.get("metadatas") else {}
-                chunks.append(Chunk(
-                    id=chunk_id,
-                    content=results["documents"][i],
-                    source_file=metadata.get("source_file", "")
-                ))
-
-            self.bm25_store.build_index(chunks)
+        """Rebuild BM25 index from all chunks in FAISS."""
+        all_chunks = []
+        
+        for chunk_id, meta in self.vector_store.metadata.items():
+            chunk = Chunk(
+                id=chunk_id,
+                content=meta["content"],
+                source_file=meta.get("source_file", ""),
+                metadata={
+                    "h1": meta.get("h1", ""),
+                    "h2": meta.get("h2", ""),
+                },
+                parent_id=meta.get("parent_id") or None,
+                parent_text=meta.get("parent_text") or None,
+            )
+            all_chunks.append(chunk)
+        
+        if all_chunks:
+            self.bm25_store.build_index(all_chunks)
             self.bm25_store.save()
 
     def _delete_file(self, file_path: Path):

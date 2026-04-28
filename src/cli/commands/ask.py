@@ -1,11 +1,19 @@
 import typer
+import asyncio
 from rich.console import Console
+from rich.panel import Panel
+
+from retrieval.hybrid_search import HybridSearch
+from generation.decider import Decider
+from generation.llm_client import LLMClient
+from generation.prompt import SYSTEM_PROMPT
+
 
 console = Console()
 
 def ask(
         query: str = typer.Argument(..., help="Your question"),
-        offline: bool = typer.Option(False, "--offline", '-o', help="Force online mode"),
+        offline: bool = typer.Option(False, "--offline", '-o', help="Force offline mode"),
         show_sources: bool = typer.Option(False, "--show-sources", '-s', help="Show source files"),
         verbose: bool = typer.Option(False, "--verbose", '-v', help="Show processes")
 ):
@@ -13,16 +21,54 @@ def ask(
 
     console.print(f"[bold]Question:[/bold] {query}")
 
-    # Search logic will be here (with --ofline argument if it exists)
+    #init
+    hybrid_search = HybridSearch()
+    decider = Decider()
 
+    #retrieval
+    chunks = asyncio.run(hybrid_search.search(query))
+
+    if not chunks:
+        console.print("[yellow]Nothing found.[/yellow]")
+        return
+    
     if verbose:
-        console.print("Time of retrieval")
-        # Time of the search will be here
+        console.print(f"[dim]Found {len(chunks)} relevant chunks[/dim]")
 
-    console.print("Your answer:")
-        # Answer will be here
+    #mode decision
+    decision = decider.decide(chunks, offline_flag=offline)
 
-    if show_sources:
-        console.print("first doc")
-        console.print("second doc")
+    #offline
+    if decision["action"] == "return_chunks":
+        console.print(Panel(decision["data"], title="Search Results"))
+        if show_sources:
+            _print_sources(chunks)
+    
+    #online
+    else:
+        if verbose:
+            console.print("[dim]Sending to LLM...[/dim]")
+        
+        llm_client = LLMClient()
+        response = llm_client.generate(
+            context=decision["data"],
+            query=query,
+            system_prompt=SYSTEM_PROMPT,
+        )
+
+        console.print(Panel(response, title="Answer"))
+        if show_sources:
+            _print_sources(chunks)
+
+def _print_sources(chunks: list):
+    """Print source files."""
+
+    sources = set()
+    for chunk in chunks:
+        source = chunk["metadata"].get("source_file", "unknown")
+        sources.add(source)
+    
+    console.print("\n[bold]Sources:[/bold]")
+    for source in sources:
+        console.print(f" - {source}")
 
