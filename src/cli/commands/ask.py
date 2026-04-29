@@ -30,7 +30,7 @@ def ask(
 
     if not chunks:
         console.print("[yellow]Nothing found.[/yellow]")
-        return
+        return ""
     
     if verbose:
         console.print(f"[dim]Found {len(chunks)} relevant chunks[/dim]")
