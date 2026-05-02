@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Set, Dict, Any
 
 from core.config import config
+from loguru import logger
 from indexing.embedder import Embedder
 from indexing.chunker import MarkdownChunker, Chunk
 from indexing.vector_store import ChromaStore
@@ -46,7 +47,7 @@ class IndexOrchestrator:
 
         if not to_process and not to_delete:
             if self.verbose:
-                print("Nothing to change")
+                logger.info("Nothing to change")
             return {"processed": 0, "deleted": 0, "chunks": 0}
 
         stats = {"processed": 0, "deleted": 0, "chunks": 0}
@@ -54,7 +55,7 @@ class IndexOrchestrator:
         #if file needs to be deleted
         for file_path in to_delete:
             if self.verbose:
-                print(f"Deleting: {file_path}")
+                logger.info(f"Deleting: {file_path}")
             self._delete_file(file_path)
             stats["deleted"] += 1
         
@@ -62,7 +63,7 @@ class IndexOrchestrator:
         all_new_chunks = []
         for file_path in to_process:
             if self.verbose:
-                print(f"Processing: {file_path}")
+                logger.info(f"Processing: {file_path}")
             chunks = await self._process_file(file_path)
             stats["processed"] += 1
             stats["chunks"] += len(chunks)
@@ -74,7 +75,7 @@ class IndexOrchestrator:
         #rebuild bm25 index if there any changes
         if to_process or to_delete:
             if self.verbose:
-                print("Rebuilding BM25 index...")
+                logger.info("Rebuilding BM25 index...")
             self._rebuild_bm25()
         
         #Save index states (rebuilding completely)

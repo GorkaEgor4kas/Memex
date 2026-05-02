@@ -43,7 +43,7 @@ class LLMClient:
 
         api_key = config.env.get("DEEPSEEK_API_KEY")
         if not api_key:
-            raise ValueError("API key not found. Set DEEPSEEK_API_KEY in .env")
+            raise ValueError("API key not found. Set GROQ_API_KEY in .env")
 
         response = httpx.post(
             "https://api.deepseek.com/v1/chat/completions",
@@ -64,6 +64,8 @@ class LLMClient:
         )
         
         data = response.json()
+        if "error" in data:
+            raise ValueError(f"API Error: {data['error']['message']}")
         return data["choices"][0]["message"]["content"]
 
     def _call_groq(self, system: str, user: str) -> str:
@@ -90,4 +92,6 @@ class LLMClient:
             timeout=60,
         )
         data = response.json()
+        if "error" in data:
+            raise ValueError(f"API Error: {data['error']['message']}")
         return data["choices"][0]["message"]["content"]

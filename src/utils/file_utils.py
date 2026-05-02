@@ -5,7 +5,7 @@ import hashlib
 def get_all_md_files(vault_path: Path) -> Set[Path]:
     """Recursively find all .md files in vault, excluding .obsidian folder."""
     if not vault_path.exists():
-        raise FileNotFoundError(f"Vault path does not exist: {vault_path}")
+        raise ValueError(f"Vault path does not exist: {vault_path}")
     
     md_files = set()
 

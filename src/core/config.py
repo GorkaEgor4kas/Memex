@@ -3,6 +3,8 @@ import tomllib
 from dotenv import load_dotenv
 import os
 
+from utils.logger import setup_logger
+
 load_dotenv()
 
 
@@ -17,6 +19,7 @@ class Config:
         self.retrieval = self.RetrievalConfig(self.defaults, self.user, self.env)
         self.online = self.OnlineConfig(self.defaults, self.user, self.env)
         self.thresholds = self.ThresholdsConfig(self.defaults, self.user, self.env)
+        setup_logger(log_level=self._log_level)
 
     def _load_pyproject(self) -> dict:
         pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
@@ -30,6 +33,9 @@ class Config:
             with open(user_path, "rb") as f:
                 return tomllib.load(f)
         return {}
+    
+    def _log_level(self) -> str:
+        return self._defaults["system"]["log_level"]
 
     def _mode(self) -> str:
         if val := self.env.get("OBSIDIAN_RAG_MODE"):
@@ -70,7 +76,7 @@ class Config:
                 if val := system.get("bm25_index_path"):
                     return Path(val).expanduser()
             return Path(self._defaults["system"]["bm25_index_path"]).expanduser()
-
+        
     class IndexingConfig:
         def __init__(self, defaults, user, env):
             self._defaults = defaults
