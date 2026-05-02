@@ -1,9 +1,38 @@
 import typer
+import threading
+import sys
 from rich.console import Console
 from rich.panel import Panel
-from cli.commands.index import index as index_cmd
+from cli.commands.ask import ask
+from cli.commands.index import index
 
 console = Console()
+
+
+class TimeoutTimer:
+    """Timer with reset option"""
+
+    def __init__(self, timeout_seconds: int):
+        self.timeout = timeout_seconds
+        self.timer = None
+        self.expired = False
+
+    def start(self):
+        """Timer start"""
+        self.timer = threading.Timer(self.timeout, self._on_expire)
+        self.timer.daemon = True
+        self.timer.start()
+
+    def reset(self):
+        """Timer reset"""
+        if self.timer:
+            self.timer.cancel()
+        self.start()
+
+    def _on_expire(self):
+        """Calls after timeout"""
+        self.expired = True
+        console.print("\n[yellow]Timeout reached. Exiting chat...[/yellow]")
 
 
 def chat(
@@ -20,13 +49,25 @@ def chat(
     decider = Decider()
     llm_client = LLMClient()
 
-    console.print("[green]Chat started. Model loaded. Type /exit to quit, /index to reindex and /ask to ask a question.[/green]")
+    timeout_seconds = timeout * 60
+    timer = TimeoutTimer(timeout_seconds)
+    timer.start()
+
+    console.print(f"[green]Chat started. Model loaded. Timeout: {timeout} min. Type /exit to quit, /index to reindex.[/green]")
+
+    import asyncio
 
     while True:
+        #timeout check
+        if timer.expired:
+            break
+
         try:
             query = typer.prompt(">> ")
         except (EOFError, KeyboardInterrupt):
             break
+
+        timer.reset()
 
         if query == "/exit":
             break
@@ -37,7 +78,7 @@ def chat(
             force = "--force" in parts or "-f" in parts
             verbose = "--verbose" in parts or "-v" in parts
             dry_run = "--dry-run" in parts or "-n" in parts
-            index_cmd(force=force, verbose=verbose, dry_run=dry_run)
+            index(force=force, verbose=verbose, dry_run=dry_run)
             continue
 
         elif not query.strip():
@@ -48,7 +89,6 @@ def chat(
         show_sources = "--show-sources" in parts or "-s" in parts
         verbose = "--verbose" in parts or "-v" in parts
 
-        import asyncio
         chunks = asyncio.run(hybrid_search.search(query))
 
         if not chunks:
@@ -58,7 +98,6 @@ def chat(
         if verbose:
             console.print(f"[dim]Found {len(chunks)} chunks[/dim]")
 
-        # Mode
         decision = decider.decide(chunks, offline_flag=offline)
 
         if decision["action"] == "return_chunks":
