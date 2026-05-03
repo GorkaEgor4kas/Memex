@@ -13,7 +13,7 @@ RAG system for searching and asking questions about your Obsidian vault.
 
 ## 📸 Demo
 
-![Example](screenshots/example.png)
+![Example](screenshots/image.png)
 
 ## 📋 Requirements
 
@@ -173,17 +173,3 @@ MIT License — see [LICENSE](LICENSE) file
 
 ⭐ If this project helped you, give it a star on GitHub!
 ```
-
----
-
-### 📝 Что поправил
-
-| Было | Стало | Зачем |
-|:---|:---|:---|
-| `[your-username]` | `GorkaEgor4ka` | Ваш реальный GitHub |
-| `parental` | `Parent-Child` | Устоявшийся термин |
-| `local Ollama` | убрал | Вы отказались от локальной LLM |
-| `config.yaml` с `hybrid: bm25_weight` | Актуальные параметры из `pyproject.toml` | Соответствует реальному конфигу |
-| `OBSIDIAN_RAG_VAULT_PATH=/path` | убрал | Путь задаётся в `pyproject.toml` |
-
-Осталось сделать скриншот терминала с примером работы и сохранить в `screenshots/example.png`.
