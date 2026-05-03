@@ -3,6 +3,7 @@ from typing import List, Union
 
 from utils.network import is_internet_available
 from core.config import config
+from pathlib import Path
 
 class Decider:
     """Decides what to do with retrieval results and prepares chunks for proper answer."""
@@ -56,12 +57,12 @@ class Decider:
 
     def _format_chunks_for_llm(self, chunks: List[dict]) -> str:
         """Format chunks as context for LLM prompt."""
-
         lines = []
         for i, chunk in enumerate(chunks, 1):
             source = chunk["metadata"].get("source_file", "unknown")
+            filename = Path(source).name if source != "unknown" else source
             content = chunk["content"]
-            lines.append(f"[Document {i}: {source}]")
+            lines.append(f"[Document {i}: {filename}]")
             lines.append(content)
             lines.append("")
         return "\n".join(lines)
