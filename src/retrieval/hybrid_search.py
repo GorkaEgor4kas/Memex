@@ -35,14 +35,6 @@ class HybridSearch:
         return unique_chunks
     
     def _resolve_parents(self, chunks: List[dict]) -> List[dict]:
-        '''
-        If chunk is child and it has a parent_id -> replace it with parent chunk.
-        Delete parent duplicates.
-
-        Returns:
-            unique ready-to-use chunks for asnwer.
-        '''
-
         seen_parents = set()
         resolved = []
 
@@ -55,7 +47,6 @@ class HybridSearch:
                     if parent_chunk:
                         resolved.append(parent_chunk[0])
                         seen_parents.add(parent_id)
-
             else:
                 if chunk["id"] not in seen_parents:
                     resolved.append(chunk)

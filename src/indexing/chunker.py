@@ -46,6 +46,10 @@ class MarkdownChunker:
             #check if the chunk length exceeded the limit
             if len(section_text) > self.chunk_size and self.use_parental:
                 child_texts = self._split_by_size(section_text)
+                
+                # adding parent chunks
+                chunks.append(parent_chunk)
+                
                 for i, child_text in enumerate(child_texts):
                     enriched = self._enrich(child_text, source_file, h1, h2)
                     chunks.append(Chunk(
@@ -157,9 +161,19 @@ class MarkdownChunker:
     def _enrich(self, text: str, source: str, h1: str, h2: str) -> str:
         parts = [f"[File: {source}]"]
         if h1:
-            parts.append(h1)
+            parts.append(f"[{h1}]")
         if h2:
-            parts.append(h2)
+            parts.append(f"[{h2}]")
+            if re.match(r'\d{2}-\d{2}-\d{4}', h2):
+                try:
+                    from datetime import datetime
+                    dt = datetime.strptime(h2, "%d-%m-%Y")
+                    # Несколько форматов для точного поиска
+                    parts.append(f"[Date: {dt.strftime('%d %B %Y')}]")   # 18 April 2026
+                    parts.append(f"[Date: {dt.strftime('%Y-%m-%d')}]")   # 2026-04-18
+                    parts.append(f"[Date: {dt.strftime('%d.%m.%Y')}]")   # 18.04.2026
+                except ValueError:
+                    pass
         parts.append(text)
         return "\n".join(parts)
 
