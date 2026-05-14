@@ -1,12 +1,8 @@
 import typer
-import asyncio
 from rich.console import Console
 from rich.panel import Panel
 
-from retrieval.hybrid_search import HybridSearch
-from generation.decider import Decider
-from generation.llm_client import LLMClient
-from generation.prompt import SYSTEM_PROMPT
+from core.core import MemexCore
 
 
 console = Console()
@@ -21,54 +17,25 @@ def ask(
 
     console.print(f"[bold]Question:[/bold] {query}")
 
-    #init
-    hybrid_search = HybridSearch()
-    decider = Decider()
+    memex = MemexCore()
+    result = memex.search(query, offline)
 
-    #retrieval
-    chunks = asyncio.run(hybrid_search.search(query))
-
-    if not chunks:
+    if result["status"] == "empty":
         console.print("[yellow]Nothing found.[/yellow]")
-        return ""
-    
+        return
+
     if verbose:
-        console.print(f"[dim]Found {len(chunks)} relevant chunks[/dim]")
+        console.print(f"[dim]Found {len(result['chunks'])} relevant chunks[/dim]")
 
-    #mode decision
-    decision = decider.decide(chunks, offline_flag=offline)
+    title = "Answer" if result["status"] == "llm_answer" else "Search Results"
+    console.print(Panel(result["answer"], title=title))
 
-    #offline
-    if decision["action"] == "return_chunks":
-        console.print(Panel(decision["data"], title="Search Results"))
-        if show_sources:
-            _print_sources(chunks)
-    
-    #online
-    else:
-        if verbose:
-            console.print("[dim]Sending to LLM...[/dim]")
-        
-        llm_client = LLMClient()
-        response = llm_client.generate(
-            context=decision["data"],
-            query=query,
-            system_prompt=SYSTEM_PROMPT,
-        )
+    if show_sources:
+        _print_sources(result["sources"])
 
-        console.print(Panel(response, title="Answer"))
-        if show_sources:
-            _print_sources(chunks)
 
-def _print_sources(chunks: list):
-    """Print source files."""
-
-    sources = set()
-    for chunk in chunks:
-        source = chunk["metadata"].get("source_file", "unknown")
-        sources.add(source)
-    
+def _print_sources(sources: set):
     console.print("\n[bold]Sources:[/bold]")
-    for source in sources:
-        console.print(f" - {source}")
+    for source in sorted(sources):
+        console.print(f"  - {source}")
 
