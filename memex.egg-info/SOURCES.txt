@@ -17,7 +17,6 @@ memex/cli/commands/index.py
 memex/core/__init__.py
 memex/core/config.py
 memex/core/core.py
-memex/core/models.py
 memex/generation/__init__.py
 memex/generation/decider.py
 memex/generation/llm_client.py
