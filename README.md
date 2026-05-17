@@ -26,7 +26,7 @@ RAG system for searching and asking questions about your Obsidian vault.
 
 ```bash
 # Clone the repository
-git clone https://github.com/GorkaEgor4ka/obsidian-rag.git
+git clone https://github.com/GorkaEgor4ka/Memex.git
 cd obsidian-rag
 
 # Install in development mode
