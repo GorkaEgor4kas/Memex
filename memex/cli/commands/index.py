@@ -4,7 +4,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from indexing.orchestrator import IndexOrchestrator
+from memex.indexing.orchestrator import IndexOrchestrator
 
 
 console = Console()

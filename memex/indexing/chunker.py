@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, Tuple, List
 from pathlib import Path
-from core.config import config
+from memex.core.config import config
 import re
 import uuid
 

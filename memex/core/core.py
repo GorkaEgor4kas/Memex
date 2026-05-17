@@ -1,10 +1,10 @@
 # memex/core.py
 import asyncio
-from retrieval.hybrid_search import HybridSearch
-from generation.decider import Decider
-from generation.llm_client import LLMClient
-from generation.prompt import SYSTEM_PROMPT
-from indexing.orchestrator import IndexOrchestrator
+from memex.retrieval.hybrid_search import HybridSearch
+from memex.generation.decider import Decider
+from memex.generation.llm_client import LLMClient
+from memex.generation.prompt import SYSTEM_PROMPT
+from memex.indexing.orchestrator import IndexOrchestrator
 
 
 class MemexCore:

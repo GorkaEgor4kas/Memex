@@ -2,14 +2,14 @@ import asyncio
 from pathlib import Path
 from typing import List, Set, Dict, Any
 
-from core.config import config
+from memex.core.config import config
 from loguru import logger
-from indexing.embedder import Embedder
-from indexing.chunker import MarkdownChunker, Chunk
-from indexing.vector_store import ChromaStore
-from indexing.bm25_store import BM25Store
-from indexing.index_state import IndexState
-from utils.file_utils import get_all_md_files, get_relative_path
+from memex.indexing.embedder import Embedder
+from memex.indexing.chunker import MarkdownChunker, Chunk
+from memex.indexing.vector_store import ChromaStore
+from memex.indexing.bm25_store import BM25Store
+from memex.indexing.index_state import IndexState
+from memex.utils.file_utils import get_all_md_files, get_relative_path
 
 
 

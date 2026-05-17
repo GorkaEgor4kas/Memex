@@ -2,8 +2,8 @@ import pytest
 import tempfile
 import shutil
 from pathlib import Path
-from indexing.chunker import Chunk
-from indexing.bm25_store import BM25Store
+from memex.indexing.chunker import Chunk
+from memex.indexing.bm25_store import BM25Store
 
 
 def create_test_chunks():

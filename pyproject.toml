@@ -1,19 +1,15 @@
-# default settings for project
-
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "obsidian-rag"
+name = "memex"
 version = "0.1.0"
 description = "Offline-first RAG system for Obsidian vaults"
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [
-    {name = "GorkaEgor4ka", email = "gorkaegor4kas@gmail.com"}
-]
-license = {text = "MIT"}
+authors = [{name = "GorkaEgor4ka", email = "gorkaegor4kas@gmail.com"}]
+license = "MIT"
 dependencies = [
     "typer>=0.12.0",
     "rich>=13.0.0",
@@ -40,31 +36,33 @@ dev = [
 ]
 
 [project.scripts]
-obsidian-rag = "cli.main:app"
+memex = "memex.cli.main:app"
+
+[tool.setuptools.packages.find]
+include = ["memex*"]
+exclude = ["screenshots", "config"]
 
 # ============================================
-# Obsidian RAG Default Configuration
-# This is the template. User config lives in:
-#   ~/.obsidian-rag/config.toml
-# ============================================
+# Memex Default Configuration
+# ============================================  
 
-[tool.obsidian-rag]
+[tool.memex]
 vault_path = "C:/Users/Егор/OneDrive/Рабочий стол/учебники по прогам/Backend"
-mode = "auto"  # auto, online, offline
+mode = "auto"
 
-[tool.obsidian-rag.indexing]
+[tool.memex.indexing]
 chunk_size = 500
 chunk_overlap = 50
 use_parental = true
 
-[tool.obsidian-rag.retrieval]
+[tool.memex.retrieval]
 semantic_limit = 10
 bm25_limit = 10
 rrf_k = 60
 final_limit = 5
 
-[tool.obsidian-rag.online]
-provider = "deepseek"  # deepseek, groq
+[tool.memex.online]
+provider = "deepseek"
 model = "deepseek-chat"
 temperature = 0.2
 max_tokens = 1000
@@ -81,15 +79,11 @@ If the context doesn't answer the question, say, "No information on this questio
 Don't add anything of your own.
 '''
 
-[tool.obsidian-rag.system]
-chroma_db_path = "~/.obsidian-rag/chroma_data"
-bm25_index_path = "~/.obsidian-rag/bm25_index"
+[tool.memex.system]
+chroma_db_path = "~/.memex/chroma_data"
+bm25_index_path = "~/.memex/bm25_index"
 log_level = "INFO"
 
-# hybrid search benchmarks
-[tool.obsidian-rag.thresholds]
+[tool.memex.thresholds]
 bm25_min_score = 1.0
 vector_min_similarity = 0.5
-
-
-

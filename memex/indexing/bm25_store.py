@@ -1,7 +1,7 @@
 '''BM25 vault logic'''
-from core.config import config
+from memex.core.config import config
 from typing import List, Tuple
-from indexing.chunker import Chunk
+from memex.indexing.chunker import Chunk
 import json
 from pathlib import Path
 

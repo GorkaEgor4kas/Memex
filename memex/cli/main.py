@@ -1,9 +1,9 @@
 import sys
 import typer
-from .commands.index import index 
-from .commands.ask import ask
-from .commands.config import config
-from .commands.chat import chat
+from memex.cli.commands.index import index 
+from memex.cli.commands.ask import ask
+from memex.cli.commands.config import config
+from memex.cli.commands.chat import chat
 
 app = typer.Typer()
 

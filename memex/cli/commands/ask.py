@@ -2,7 +2,7 @@ import typer
 from rich.console import Console
 from rich.panel import Panel
 
-from core.core import MemexCore
+from memex.core.core import MemexCore
 
 
 console = Console()

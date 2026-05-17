@@ -5,8 +5,8 @@ from typing import List, Dict
 import numpy as np
 import faiss
 
-from core.config import config
-from indexing.chunker import Chunk
+from memex.core.config import config
+from memex.indexing.chunker import Chunk
 
 
 class ChromaStore:

@@ -3,8 +3,8 @@ import typer
 import threading
 from rich.console import Console
 from rich.panel import Panel
-from core.core import MemexCore
-from cli.commands.index import index as index_cmd
+from memex.core.core import MemexCore
+from memex.cli.commands.index import index as index_cmd
 
 console = Console()
 

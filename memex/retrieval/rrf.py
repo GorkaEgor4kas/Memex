@@ -1,7 +1,7 @@
 """Reciprocal Rank Fusion."""
 from typing import List, Tuple
 
-from core.config import config
+from memex.core.config import config
 
 def rrf_fusion(
         semantic_results: List[Tuple[str, float]],

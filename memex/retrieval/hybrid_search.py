@@ -3,11 +3,12 @@
 import asyncio
 from typing import List, Tuple
 
-from indexing.vector_store import ChromaStore
-from retrieval.semantic_search import SemanticSearch
-from retrieval.bm25_search import BM25Searcher
-from retrieval.rrf import rrf_fusion
-from core.config import config
+from memex.indexing.vector_store import ChromaStore
+from memex.retrieval.semantic_search import SemanticSearch
+from memex.retrieval.bm25_search import BM25Searcher
+from memex.retrieval.rrf import rrf_fusion
+from memex.core.config import config
+
 
 class HybridSearch:
     '''Get final chunks base for each query'''

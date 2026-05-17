@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Dict, Any, Set
 from datetime import datetime
 
-from utils.file_utils import compute_file_hash, get_relative_path
+from memex.utils.file_utils import compute_file_hash, get_relative_path
 
 
 class IndexState:

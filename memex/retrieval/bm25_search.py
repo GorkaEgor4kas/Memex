@@ -1,8 +1,8 @@
 '''Index search handling using BM25'''
 from typing import List, Tuple
 
-from indexing.bm25_store import BM25Store
-from core.config import config
+from memex.indexing.bm25_store import BM25Store
+from memex.core.config import config
 
 class BM25Searcher:
     '''Performs index search'''

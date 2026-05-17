@@ -1,9 +1,9 @@
 '''Semantic search handling using ChromaDB'''
 from typing import List, Tuple
 
-from indexing.vector_store import ChromaStore
-from indexing.embedder import Embedder
-from core.config import config
+from memex.indexing.vector_store import ChromaStore
+from memex.indexing.embedder import Embedder
+from memex.core.config import config
 
 class SemanticSearch:
     '''Performs semantic (vector) search'''

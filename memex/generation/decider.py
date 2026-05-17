@@ -1,8 +1,8 @@
 '''Decision logic for online/offline mode.'''
 from typing import List, Union
 
-from utils.network import is_internet_available
-from core.config import config
+from memex.utils.network import is_internet_available
+from memex.core.config import config
 from pathlib import Path
 
 class Decider:

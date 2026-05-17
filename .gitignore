@@ -6,4 +6,4 @@ __pycache__
 fixtures
 .pytest_cache
 
-obsidian_rag.egg-info
+memex.egg-info

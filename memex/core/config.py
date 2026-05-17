@@ -3,7 +3,7 @@ import tomllib
 from dotenv import load_dotenv
 import os
 
-from utils.logger import setup_logger
+from memex.utils.logger import setup_logger
 
 load_dotenv()
 
@@ -25,10 +25,10 @@ class Config:
         pyproject_path = Path(__file__).parent.parent.parent / "pyproject.toml"
         with open(pyproject_path, "rb") as f:
             data = tomllib.load(f)
-        return data["tool"]["obsidian-rag"]
+        return data["tool"]["memex"]
 
     def _load_user_config(self) -> dict:
-        user_path = Path.home() / ".obsidian-rag" / "config.toml"
+        user_path = Path.home() / ".memex" / "config.toml"
         if user_path.exists():
             with open(user_path, "rb") as f:
                 return tomllib.load(f)
@@ -38,7 +38,7 @@ class Config:
         return self.defaults["system"]["log_level"]
 
     def _mode(self) -> str:
-        if val := self.env.get("OBSIDIAN_RAG_MODE"):
+        if val := self.env.get("MEMEX"):
             return val
         if val := self.user.get("mode"):
             return val
@@ -169,7 +169,7 @@ class Config:
 
         @property
         def model(self) -> str:
-            if val := self._env.get("OBSIDIAN_RAG_MODEL"):
+            if val := self._env.get("MEMEXL"):
                 return val
             if online := self._user.get("online"):
                 if val := online.get("model"):

@@ -1,6 +1,6 @@
 """LLM API client for DeepSeek/Groq."""
 import httpx
-from core.config import config
+from memex.core.config import config
 
 class LLMClient:
     """Client for cloud LLM API."""
