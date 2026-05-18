@@ -33,7 +33,7 @@ class MemexCore:
             self._llm_client = LLMClient()
         return self._llm_client
 
-    def search(self, query: str, offline: bool = False) -> dict:
+    def search(self, query: str, top_k: int = 5, offline: bool = False) -> dict:
         chunks = asyncio.run(self.hybrid_search.search(query))
 
         if not chunks:
@@ -43,6 +43,8 @@ class MemexCore:
                 "answer": None,
                 "sources": set()
             }
+
+        chunks = chunks[:top_k]
 
         decision = self.decider.decide(chunks, offline_flag=offline)
 
