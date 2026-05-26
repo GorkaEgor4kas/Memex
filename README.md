@@ -3,7 +3,7 @@
 
 RAG system for searching and asking questions about your Obsidian vault.
 
-## ✨ Features
+##  Features
 
 - ✅ **Hybrid search** — BM25 + semantic search (FAISS) + RRF
 - ✅ **Parent-Child chunking** — preserves context from headers and sections
@@ -15,19 +15,19 @@ RAG system for searching and asking questions about your Obsidian vault.
 
 ![Example](screenshots/image.png)
 
-## 📋 Requirements
+##  Requirements
 
 - Python 3.10+
 - [Groq API key](https://console.groq.com) or [DeepSeek API key](https://platform.deepseek.com/) (for online mode)
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Installation
 
 ```bash
 # Clone the repository
 git clone https://github.com/GorkaEgor4kas/Memex.git
-cd obsidian-rag
+cd Memex
 
 # Install in development mode
 pip install -e .
@@ -41,29 +41,29 @@ cp .env.example .env
 
 # Edit .env with your API keys
 # GROQ_API_KEY=your_key_here
-# OBSIDIAN_RAG_PROVIDER=groq
-# OBSIDIAN_RAG_MODEL=llama-3.3-70b-versatile
+# MEMEX_PROVIDER=groq
+# MEMEX_MODEL=llama-3.3-70b-versatile
 ```
 
 ### Index your vault
 
 ```bash
-obsidian-rag index
+memex index
 ```
 
 ### Ask a question
 
 ```bash
-obsidian-rag ask "what did I write about decorators?"
+memex ask "what did I write about decorators?"
 ```
 
 ### Chat mode (recommended)
 
 ```bash
-obsidian-rag chat
+memex chat
 ```
 
-## 📚 Commands
+##  Commands
 
 | Command | Description |
 |---------|-------------|
@@ -90,7 +90,7 @@ obsidian-rag chat
 
 ## 🔧 Configuration
 
-Settings are stored in `~/.obsidian-rag/config.yaml`
+Settings are stored in `~/.memex/config.yaml`
 
 ### Example configuration
 
@@ -123,7 +123,7 @@ thresholds:
 ## 📁 Project Structure
 
 ```
-obsidian-rag/
+memex/
 ├── src/
 │   ├── cli/           # Typer commands (index, ask, chat, config)
 │   ├── retrieval/     # BM25, FAISS, RRF, hybrid search
@@ -137,15 +137,15 @@ obsidian-rag/
 └── README.md
 ```
 
-## 🧪 Example
+##  Example
 
 ```bash
-$ obsidian-rag ask "what did I learn about decorators?" --show-sources
+$ memex ask "what did I learn about decorators?" --show-sources
 
-🔍 Searching...
+ Searching...
 Found 3 relevant chunks
 
-💡 Answer:
+ Answer:
 Based on your notes, a decorator in Python is a function that takes
 another function as an argument and extends its behavior without
 modifying it directly.
@@ -155,19 +155,19 @@ Sources:
 - notes/python/advanced.md
 ```
 
-## 🐛 Known Issues
+##  Known Issues
 
 - First query in chat mode takes ~15 seconds (models loading into RAM)
 - Without chat mode, each query takes ~15 seconds
 - Chat mode keeps models in memory for instant subsequent queries
 
-## 📄 License
+##  License
 
 MIT License — see [LICENSE](LICENSE) file
 
-## 👨‍💻 Author
+##  Author
 
-- GitHub: [@GorkaEgor4ka](https://github.com/GorkaEgor4ka)
+- GitHub: [@GorkaEgor4ka](https://github.com/GorkaEgor4kas)
 
 ---
 
