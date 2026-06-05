@@ -103,6 +103,7 @@ class IndexOrchestrator:
         for path_str in previous_paths - current_relative:
             try:
                 to_delete.append(Path(path_str))
+                Path(path_str).relative_to(self.vault_path)
             except ValueError:
                 logger.warning("Skipping file outside vault: {}", path_str)
 
