@@ -11,7 +11,7 @@ class IndexState:
     '''Manage the index state json files'''
 
     def __init__(self):
-        self.state_path = Path.home() / ".obsidian-rag" / "index_state.json"
+        self.state_path = Path.home() / ".memex" / "index_state.json"
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
 
     def load(self) -> Dict[str, Any]:

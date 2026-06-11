@@ -33,7 +33,7 @@ class MemexCore:
             self._llm_client = LLMClient()
         return self._llm_client
 
-    def search(self, query: str, top_k: int = 5, offline: bool = False) -> dict:
+    def search(self, query: str, top_k: int = 5, offline: bool = False, raw: bool = False) -> dict:
         chunks = asyncio.run(self.hybrid_search.search(query))
 
         if not chunks:
@@ -45,6 +45,14 @@ class MemexCore:
             }
 
         chunks = chunks[:top_k]
+
+        if raw:
+            return {
+                "status": "chunks",
+                "chunks": chunks,
+                "answer": self._format_chunks(chunks),
+                "sources": self._extract_sources(chunks)
+            }
 
         decision = self.decider.decide(chunks, offline_flag=offline)
 
@@ -82,3 +90,11 @@ class MemexCore:
             source = chunk.get("metadata", {}).get("source_file", "unknown")
             sources.add(source)
         return sources
+    
+    def _format_chunks(self, chunks: list) -> str:
+        texts = []
+        for i, chunk in enumerate(chunks[:5]):
+            source = chunk.get("metadata", {}).get("source_file", "unknown")
+            text = chunk.get("text", str(chunk))[:300]
+            texts.append(f"[{i+1}] {source}: {text}")
+        return "\n\n".join(texts)
