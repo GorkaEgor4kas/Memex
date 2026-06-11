@@ -80,8 +80,8 @@ Don't add anything of your own.
 '''
 
 [tool.memex.system]
-chroma_db_path = "~/.memex/chroma_data"
-bm25_index_path = "~/.memex/bm25_index"
+chroma_db_path = "C:/memex_data/chroma_data"
+bm25_index_path = "C:/memex_data/bm25_index"
 log_level = "INFO"
 
 [tool.memex.thresholds]
